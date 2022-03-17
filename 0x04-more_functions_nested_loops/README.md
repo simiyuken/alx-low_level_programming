@@ -57,3 +57,15 @@ Where size is the size of the triangle
 If size is 0 or less, the function should print only a new line
 Use the character # to print the triangle
 
+11. The prime factors of 1231952 are 2, 2, 2, 2, 37 and 2081.
+
+Write a program that finds and prints the largest prime factor of the number 612852475143, followed by a new line.
+
+You are allowed to use the standard library
+12. Write a function that prints an integer.
+
+Prototype: void print_number(int n);
+You can only use _putchar function to print
+You are not allowed to use long
+You are not allowed to use arrays or pointers
+You are not allowed to hard-code special values
