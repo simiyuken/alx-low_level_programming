@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "main.h"
+
 /**
  * main - Prints the addition of positive numbers,
  *        followed by a new line.
