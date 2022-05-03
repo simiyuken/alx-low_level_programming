@@ -1,48 +1,51 @@
 #include "main.h"
-/**
- * main - copies the content of a file to another
- *
- * @argv: arguments gived to the function
- * @argc: ammount of arguments
- * Return: 0 on success
- */
 
-int main(int argc, char **argv)
+/**
+ * main - copies the content of a file to another file
+ * @argc: number of arguments passed to the program
+ * @argv: array of arguments
+ *
+ * Return: Always 0 (Success)
+ */
+int main(int argc, char *argv[])
 {
-	int fd1, fd2, wr, tmp = 1024, cl1, cl2;
-	char *buff;
+	int fd_r, fd_w, r, a, b;
+	char buf[BUFSIZ];
 
 	if (argc != 3)
 	{
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 		exit(97);
 	}
-	fd1 = open(argv[1], O_RDONLY);
-	fd2 = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 00664);
-	while (tmp == 1024)
+	fd_r = open(argv[1], O_RDONLY);
+	if (fd_r < 0)
 	{
-		buff = malloc(sizeof(char) * 1024);
-		tmp = read(fd1, buff, 1024);
-		if (buff == NULL || fd1 < 0 || tmp < 0)
-		{
-			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
-			free(buff);
-			exit(98);
-		}
-		wr = write(fd2, buff, tmp);
-		if (wr < 0 || fd2 < 0)
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		exit(98);
+	}
+	fd_w = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	while ((r = read(fd_r, buf, BUFSIZ)) > 0)
+	{
+		if (fd_w < 0 || write(fd_w, buf, r) != r)
 		{
 			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-			free(buff);
+			close(fd_r);
 			exit(99);
 		}
-		free(buff);
 	}
-	cl1 = close(fd1);
-	cl2 = close(fd2);
-	if (cl1 == -1 || cl2 == -1)
+	if (r < 0)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %i\n", (cl1 == -1) ? fd1 : fd2);
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		exit(98);
+	}
+	a = close(fd_r);
+	b = close(fd_w);
+	if (a < 0 || b < 0)
+	{
+		if (a < 0)
+			dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_r);
+		if (b < 0)
+			dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_w);
 		exit(100);
 	}
 	return (0);
