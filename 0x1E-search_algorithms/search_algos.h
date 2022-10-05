@@ -54,5 +54,3 @@ void print_list(const listint_t *list);
 skiplist_t *linear_skip(skiplist_t *list, int value);
 
 #endif
-Footer
-© 2022 GitHub, Inc.
